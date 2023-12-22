@@ -1,11 +1,11 @@
 package com.sparta.review.comment.controller;
 
 import com.sparta.review.CommonResponseDto;
+import com.sparta.review.comment.dto.CommentListResponseDto;
 import com.sparta.review.comment.dto.CommentRequestDto;
 import com.sparta.review.comment.dto.CommentResponseDto;
 import com.sparta.review.comment.service.CommentService;
 import com.sparta.review.post.dto.PostRequestDto;
-import com.sparta.review.post.dto.PostResponseDto;
 import com.sparta.review.user.details.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +16,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
@@ -39,6 +41,13 @@ public class CommentController {
     public ResponseEntity<CommonResponseDto> postComment(@PathVariable Long post_id, @RequestBody @Valid CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         commentService.postComment(post_id, commentRequestDto, userDetails.getUser());
         return ResponseEntity.ok().body(new CommonResponseDto("댓글 작성을 완료했습니다.", HttpStatus.OK.value()));
+    }
+
+    @GetMapping("{post_id}")
+    public ResponseEntity<List<CommentListResponseDto>> getCommentList(@PathVariable Long post_id) {
+        List<CommentListResponseDto> commentListResponseDtos = commentService.getCommentList(post_id);
+
+        return ResponseEntity.ok().body(commentListResponseDtos);
     }
 
     @PatchMapping("/{comment_id}")
