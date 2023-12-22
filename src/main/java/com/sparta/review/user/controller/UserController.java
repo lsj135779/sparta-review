@@ -68,8 +68,10 @@ public class UserController {
 
         String token = jwtUtil.createToken(nickname);
         token = URLEncoder.encode(token, "UTF-8");
+        Cookie cookie = new Cookie(JwtUtil.AUTHORIZATION_HEADER, token);
+        cookie.setPath("/");
         // 클라이언트에게 JWT를 Cookie로 전달
-        response.addCookie(new Cookie(JwtUtil.AUTHORIZATION_HEADER, token));
+        response.addCookie(cookie);
         return ResponseEntity.ok().body(new CommonResponseDto("로그인을 완료했습니다.", HttpStatus.OK.value()));
     }
 }
