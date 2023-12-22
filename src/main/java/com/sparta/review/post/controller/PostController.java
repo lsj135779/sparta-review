@@ -66,7 +66,7 @@ public class PostController {
     }
 
     @PatchMapping("/{post_id}")
-    public ResponseEntity<CommonResponseDto> patchPost(@PathVariable Long post_id, @RequestBody PostRequestDto postRequestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<CommonResponseDto> patchPost(@PathVariable Long post_id, @RequestBody @Valid PostRequestDto postRequestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {
         try {
             PostResponseDto postResponseDto = postService.patchPost(post_id, postRequestDto,userDetails.getUser());
             return ResponseEntity.ok().body(postResponseDto);
