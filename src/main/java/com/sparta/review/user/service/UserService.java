@@ -4,9 +4,11 @@ import com.sparta.review.user.dto.UserRequestDto;
 import com.sparta.review.user.entity.User;
 import com.sparta.review.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -36,5 +38,12 @@ public class UserService {
 
     public boolean isNicknameExists(String nickname) {
         return userRepository.existsByNickname(nickname);
+    }
+
+    public void login(String nickname, String password) {
+        User user = userRepository.findByNickname(nickname).orElseThrow(() -> new IllegalArgumentException("Login failed: 닉네임 또는 패스워드를 확인해주세요."));
+        if(!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Login failed: 닉네임 또는 패스워드를 확인해주세요.");
+        }
     }
 }
