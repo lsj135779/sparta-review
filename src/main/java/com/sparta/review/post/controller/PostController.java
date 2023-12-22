@@ -64,4 +64,14 @@ public class PostController {
 
         return ResponseEntity.ok().body(postListResponseDtos);
     }
+
+    @PatchMapping("/{post_id}")
+    public ResponseEntity<CommonResponseDto> patchPost(@PathVariable Long post_id, @RequestBody PostRequestDto postRequestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            PostResponseDto postResponseDto = postService.patchPost(post_id, postRequestDto,userDetails.getUser());
+            return ResponseEntity.ok().body(postResponseDto);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+    }
 }
