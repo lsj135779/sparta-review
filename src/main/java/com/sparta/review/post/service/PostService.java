@@ -1,5 +1,7 @@
 package com.sparta.review.post.service;
 
+import com.sparta.review.comment.entity.Comment;
+import com.sparta.review.comment.repository.CommentRepository;
 import com.sparta.review.post.dto.PostListResponseDto;
 import com.sparta.review.post.dto.PostRequestDto;
 import com.sparta.review.post.dto.PostResponseDto;
@@ -8,16 +10,19 @@ import com.sparta.review.post.repository.PostRepository;
 import com.sparta.review.user.entity.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     public void createPost(PostRequestDto postRequestDto, User user) {
         Post post = new Post(postRequestDto, user);
@@ -26,6 +31,10 @@ public class PostService {
 
     public PostResponseDto getPost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new IllegalArgumentException("해당 게시글은 없습니다."));
+
+        List<Comment> commentList = commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
+        post.setCommentList(commentList);
+
         return new PostResponseDto(post);
     }
 
