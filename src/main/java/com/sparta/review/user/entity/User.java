@@ -1,5 +1,6 @@
 package com.sparta.review.user.entity;
 
+import com.sparta.review.comment.entity.Comment;
 import com.sparta.review.post.entity.Post;
 import com.sparta.review.user.dto.UserRequestDto;
 import jakarta.persistence.*;
@@ -27,6 +28,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Post> boardList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> commentList;
 
     public User(String nickname, String encode) {
         this.nickname = nickname;
