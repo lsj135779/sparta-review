@@ -1,11 +1,14 @@
 package com.sparta.review.user.entity;
 
+import com.sparta.review.post.entity.Post;
 import com.sparta.review.user.dto.UserRequestDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Getter
 @Entity
@@ -21,6 +24,9 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Post> boardList;
 
     public User(String nickname, String encode) {
         this.nickname = nickname;
