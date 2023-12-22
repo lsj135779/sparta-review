@@ -74,4 +74,14 @@ public class PostController {
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
     }
+
+    @DeleteMapping("/{post_id}")
+    public ResponseEntity<CommonResponseDto> deletePost(@PathVariable Long post_id,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        try {
+            postService.deletePost(post_id,userDetails.getUser());
+            return ResponseEntity.ok().body(new CommonResponseDto("게시글 삭제를 완료했습니다.", HttpStatus.OK.value()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
+        }
+    }
 }
