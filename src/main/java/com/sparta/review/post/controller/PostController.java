@@ -1,6 +1,7 @@
 package com.sparta.review.post.controller;
 
 import com.sparta.review.CommonResponseDto;
+import com.sparta.review.post.dto.PostListResponseDto;
 import com.sparta.review.post.dto.PostRequestDto;
 import com.sparta.review.post.dto.PostResponseDto;
 import com.sparta.review.post.entity.Post;
@@ -16,6 +17,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -50,5 +55,13 @@ public class PostController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new CommonResponseDto(e.getMessage(), HttpStatus.BAD_REQUEST.value()));
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PostListResponseDto>> getPostList() {
+
+        List<PostListResponseDto> postListResponseDtos = postService.getPostList();
+
+        return ResponseEntity.ok().body(postListResponseDtos);
     }
 }
