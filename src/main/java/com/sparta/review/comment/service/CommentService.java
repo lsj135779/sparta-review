@@ -5,9 +5,7 @@ import com.sparta.review.comment.dto.CommentRequestDto;
 import com.sparta.review.comment.dto.CommentResponseDto;
 import com.sparta.review.comment.entity.Comment;
 import com.sparta.review.comment.repository.CommentRepository;
-import com.sparta.review.post.dto.PostListResponseDto;
 import com.sparta.review.post.dto.PostRequestDto;
-import com.sparta.review.post.dto.PostResponseDto;
 import com.sparta.review.post.entity.Post;
 import com.sparta.review.post.repository.PostRepository;
 import com.sparta.review.user.entity.User;
@@ -55,7 +53,7 @@ public class CommentService {
     }
 
     public List<CommentListResponseDto> getCommentList(Long postId) {
-        List<Comment> commentList = commentRepository.findAllByOrderByCreatedAtDesc();
+        List<Comment> commentList = commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
 
         List<CommentListResponseDto> commentListResponseDtos = new ArrayList<>();
         for (Comment comment : commentList) {
